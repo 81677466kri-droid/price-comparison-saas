@@ -1,21 +1,59 @@
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    // आपका कनेक्शन सेटअप
-    const supabaseUrl = 'https://cwhgruikocochkehlwuw.supabase.co';
-    const supabaseKey = 'sb_publishable_njQ9Il9ry7KkkFiYzEn3n...'; // यहाँ अपनी पूरी Key पेस्ट करें
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Add Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg mt-10">
+        <h2 class="text-2xl font-bold mb-6 text-blue-700 text-center">नया प्रोडक्ट जोड़ें</h2>
+        <div class="space-y-4">
+            <input type="text" id="pName" placeholder="Product Name (e.g. Bajaj Boxer)" class="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-blue-400">
+            <input type="number" id="pPrice" placeholder="Price (₹)" class="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-blue-400">
+            <input type="url" id="pLink" placeholder="WhatsApp or Affiliate Link" class="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-blue-400">
+            <button onclick="submitProduct()" id="btnText" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg shadow-md hover:bg-blue-700 transition">
+                SUBMIT PRODUCT
+            </button>
+        </div>
+    </div>
 
-    async function signUp() {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
-        const { data, error } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-        });
+    <script>
+        // आपका कनेक्शन
+        const supabaseUrl = 'https://cwhgruikocochkehlwuw.supabase.co';
+        const supabaseKey = 'sb_publishable_njQ9Il9ry7KkkFiYzEn3njQ9Il9ry7KkkFiYzEn3n'; // पक्का करें कि यह आपकी पूरी Key है
+        const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        if (error) alert("गलती: " + error.message);
-        else alert("बधाई हो! आपकी आईडी बन गई है। अपनी ईमेल चेक करें।");
-    }
-</script>
+        async function submitProduct() {
+            const name = document.getElementById('pName').value;
+            const price = document.getElementById('pPrice').value;
+            const link = document.getElementById('pLink').value;
+            const btn = document.getElementById('btnText');
+
+            if(!name || !price || !link) {
+                alert("कृपया सभी जानकारी भरें!");
+                return;
+            }
+
+            btn.innerText = "Saving...";
+            btn.disabled = true;
+
+            const { data, error } = await _supabase
+                .from('products')
+                .insert([{ name: name, price: price, contact_link: link }]);
+
+            if (error) {
+                alert("गलती: " + error.message);
+                btn.innerText = "SUBMIT PRODUCT";
+                btn.disabled = false;
+            } else {
+                alert("बधाई हो! प्रोडक्ट डेटाबेस में सेव हो गया है।");
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>
