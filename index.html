@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krish Bazaar | Digital Mall</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; transition: 0.3s; }
+        .text-glow { text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+    </style>
+</head>
+<body class="dark bg-slate-900 text-white min-h-screen transition-all" id="main-app">
+
+    <nav class="p-4 border-b border-gray-800 flex justify-between items-center px-6 sticky top-0 bg-slate-900/90 backdrop-blur-md z-50">
+        <h1 class="text-2xl font-black italic text-blue-500">KRISH<span class="dark:text-white text-slate-900">BAZAAR</span></h1>
+        <div class="flex items-center gap-4">
+            <button onclick="document.getElementById('main-app').classList.toggle('dark')" class="p-2 bg-gray-800 rounded-full text-yellow-400">
+                <i class="fas fa-moon dark:hidden"></i>
+                <i class="fas fa-sun hidden dark:block"></i>
+            </button>
+            <a href="admin.html" class="bg-blue-600 px-4 py-2 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition">+ सेल करें</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-8 text-center">
+        <h2 class="text-5xl font-black mb-4">पुरुलिया का <span class="text-blue-500 text-glow">डिजिटल मॉल</span></h2>
+        <p class="text-gray-400 mb-12">कपड़े, घड़ियाँ, मोबाइल - सब कुछ यहाँ मिलेगा।</p>
+        
+        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <p class="col-span-full text-center py-10 opacity-50 animate-pulse">दुकान खुल रही है...</p>
+        </div>
+    </div>
+
+    <script>
+        // Supabase Setup
+        const supabaseUrl = 'https://cwhgruikocochkehlwuw.supabase.co';
+        const supabaseKey = 'sb_publishable_njQ9Il9ry7KkkFiYzEn3njQ9Il9ry7KkkFiYzEn3n';
+        const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        async function loadStore() {
+            const { data } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
+            const list = document.getElementById('product-list');
+            list.innerHTML = '';
+            
+            if (data && data.length > 0) {
+                data.forEach(item => {
+                    list.innerHTML += `
+                        <div class="bg-slate-800 p-6 rounded-[2.5rem] border border-gray-700 hover:border-blue-500 transition-all shadow-2xl group">
+                            <div class="h-40 bg-slate-700 rounded-3xl mb-4 flex items-center justify-center overflow-hidden">
+                                <i class="fas fa-shopping-bag text-5xl text-blue-500 opacity-20 group-hover:scale-110 transition"></i>
+                            </div>
+                            <h3 class="font-bold text-xl mb-1">${item.name}</h3>
+                            <p class="text-3xl font-black text-blue-500 mb-6">₹${item.price}</p>
+                            <a href="${item.contact_link}" target="_blank" class="block w-full bg-blue-600 text-white py-4 rounded-2xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/20">
+                                <i class="fab fa-whatsapp mr-2"></i>अभी खरीदें
+                            </a>
+                        </div>`;
+                });
+            } else {
+                list.innerHTML = '<p class="col-span-full opacity-30 italic text-xl">अभी कोई सामान स्टॉक में नहीं है।</p>';
+            }
+        }
+
+        // Anti-Hacker Security
+        document.oncontextmenu = () => false;
+
+        loadStore();
+    </script>
+</body>
+</html>
