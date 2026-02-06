@@ -2,27 +2,31 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Krish Bazaar | Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krish Bazaar | Live Now</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-slate-900 text-white p-8">
-    <div class="max-w-md mx-auto bg-slate-800 p-8 rounded-3xl shadow-2xl border border-gray-700">
-        <h2 class="text-3xl font-black mb-6 text-blue-500">नया सामान जोड़ें</h2>
-        <input id="p-name" type="text" placeholder="प्रोडक्ट का नाम" class="w-full p-4 bg-slate-700 rounded-xl mb-4 outline-none border border-transparent focus:border-blue-500">
-        <input id="p-price" type="number" placeholder="कीमत (₹)" class="w-full p-4 bg-slate-700 rounded-xl mb-4 outline-none border border-transparent focus:border-blue-500">
-        <input id="p-pin" type="password" placeholder="एडमिन पिन दर्ज करें" class="w-full p-4 bg-slate-700 rounded-xl mb-6 outline-none border border-transparent focus:border-blue-500">
-        <button onclick="uploadProduct()" class="w-full bg-blue-600 py-4 rounded-xl font-bold hover:bg-blue-700 transition">पब्लिश करें</button>
-        <p id="msg" class="mt-4 text-center text-sm"></p>
+<body class="bg-slate-900 text-white min-h-screen font-sans">
+    <nav class="p-4 border-b border-gray-800 flex justify-between items-center px-6 sticky top-0 bg-slate-900 z-50">
+        <h1 class="text-2xl font-black italic text-blue-500">KRISH<span class="text-white">BAZAAR</span></h1>
+        <a href="admin.html" class="bg-blue-600 px-4 py-2 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition">+ सेल करें</a>
+    </nav>
+
+    <div class="container mx-auto p-8 text-center mt-10">
+        <h2 class="text-5xl font-extrabold mb-4">पुरुलिया का <span class="text-blue-500">डिजिटल मॉल</span></h2>
+        <p class="text-gray-400 text-lg mb-12">बेहतरीन प्रोडक्ट्स, सबसे कम दाम पर। घर बैठे शॉपिंग करें।</p>
+        
+        <div id="product-list" class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center py-10">
+            <div class="p-10 border-2 border-dashed border-gray-700 rounded-3xl opacity-50">
+                <i class="fas fa-store-alt text-4xl mb-4 text-blue-500"></i>
+                <p class="italic text-gray-400 text-xl font-semibold">दुकान लाइव हो रही है... <br> सामान देखने के लिए एडमिन पैनल से प्रोडक्ट जोड़ें।</p>
+            </div>
+        </div>
     </div>
 
-    <script>
-        async function uploadProduct() {
-            const pin = document.getElementById('p-pin').value;
-            if(pin !== '2026') { alert('गलत पिन!'); return; }
-            // यहाँ आपका Supabase कोड काम करेगा
-            document.getElementById('msg').innerText = "सफलतापूर्वक जोड़ दिया गया!";
-        }
-    </script>
+    <footer class="p-10 text-center border-t border-gray-800 mt-20">
+        <p class="text-gray-500 text-sm">© 2026 Krish Bazaar Purulia. All rights reserved.</p>
+    </footer>
 </body>
 </html>
