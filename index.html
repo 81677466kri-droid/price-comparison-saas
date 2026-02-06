@@ -1,68 +1,108 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krish-Shop | Live Store</title>
+    <title>Krish Bazaar | Premium Multi-Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        // Tailwind configuration for Dark Mode
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        .glass-card { transition: all 0.3s ease; }
+        .dark .glass-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .light .glass-card { background: #ffffff; border: 1px solid #e5e7eb; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    </style>
 </head>
-<body class="bg-gray-50">
-    <nav class="bg-white shadow-md p-4 sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold text-blue-700">Krish-Shop</h1>
-            <a href="admin.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm">+ बेचें</a>
+<body class="dark bg-slate-900 text-white" id="body-tag">
+
+    <nav class="sticky top-0 z-50 p-4 border-b border-gray-700 bg-opacity-80 backdrop-blur-md flex justify-between items-center px-6 transition-all" id="nav-tag">
+        <h1 class="text-2xl font-bold italic tracking-tighter">KRISH<span class="text-blue-500">BAZAAR</span></h1>
+        
+        <div class="flex items-center gap-4">
+            <button onclick="toggleTheme()" class="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-all text-yellow-400" id="theme-btn">
+                <i class="fas fa-sun" id="theme-icon"></i>
+            </button>
+            <a href="admin.html" class="bg-blue-600 text-white px-4 py-2 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/30">+ सेल करें</a>
         </div>
     </nav>
 
-    <div class="bg-blue-600 p-8 text-white text-center">
-        <h2 class="text-2xl font-bold">हमारे लेटेस्ट प्रोडक्ट्स</h2>
-        <p class="mt-2 opacity-90 text-sm">पुरुलिया का अपना डिजिटल स्टोर</p>
-    </div>
+    <header class="py-16 text-center px-4">
+        <h2 class="text-4xl md:text-6xl font-black mb-4 transition-all" id="hero-title">आपका डिजिटल <span class="text-blue-500">मॉल</span></h2>
+        <p class="text-gray-400 max-w-lg mx-auto" id="hero-desc">कपड़े, घड़ियाँ, मोबाइल और बिजली का सामान - सब कुछ एक ही जगह।</p>
+    </header>
 
-    <div class="container mx-auto p-4 mt-6">
-        <div id="product-list" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <p class="text-center col-span-2 text-gray-500">सामान लोड हो रहा है...</p>
+    <div class="container mx-auto p-6">
+        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <p class="col-span-full text-center text-blue-500 animate-pulse">सुरक्षित रूप से लोड किया जा रहा है...</p>
         </div>
     </div>
 
     <script>
-        // आपका कनेक्शन
+        // Supabase Setup
         const supabaseUrl = 'https://cwhgruikocochkehlwuw.supabase.co';
         const supabaseKey = 'sb_publishable_njQ9Il9ry7KkkFiYzEn3njQ9Il9ry7KkkFiYzEn3n';
         const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        async function loadProducts() {
-            const { data: products, error } = await _supabase
-                .from('products')
-                .select('*');
-
-            const list = document.getElementById('product-list');
-            list.innerHTML = ''; // लोड हो रहा है टेक्स्ट हटाएँ
-
-            if (error) {
-                list.innerHTML = '<p>डेटा लोड करने में समस्या हुई।</p>';
-                return;
+        // Theme Toggle Function
+        function toggleTheme() {
+            const body = document.getElementById('body-tag');
+            const icon = document.getElementById('theme-icon');
+            const nav = document.getElementById('nav-tag');
+            const heroDesc = document.getElementById('hero-desc');
+            
+            if (body.classList.contains('dark')) {
+                // Switch to Light Mode
+                body.classList.remove('dark', 'bg-slate-900', 'text-white');
+                body.classList.add('light', 'bg-gray-50', 'text-gray-900');
+                nav.classList.replace('border-gray-700', 'border-gray-200');
+                heroDesc.classList.replace('text-gray-400', 'text-gray-600');
+                icon.classList.replace('fa-sun', 'fa-moon');
+                document.getElementById('theme-btn').classList.replace('text-yellow-400', 'text-gray-400');
+            } else {
+                // Switch to Dark Mode
+                body.classList.remove('light', 'bg-gray-50', 'text-gray-900');
+                body.classList.add('dark', 'bg-slate-900', 'text-white');
+                nav.classList.replace('border-gray-200', 'border-gray-700');
+                heroDesc.classList.replace('text-gray-600', 'text-gray-400');
+                icon.classList.replace('fa-moon', 'fa-sun');
+                document.getElementById('theme-btn').classList.replace('text-gray-400', 'text-yellow-400');
             }
-
-            products.forEach(item => {
-                list.innerHTML += `
-                    <div class="bg-white rounded-xl shadow-sm border overflow-hidden p-3">
-                        <div class="h-32 bg-gray-100 flex items-center justify-center rounded-lg">
-                            <i class="fa-solid fa-box text-3xl text-gray-300"></i>
-                        </div>
-                        <h4 class="font-bold text-gray-800 mt-2">${item.name}</h4>
-                        <p class="text-blue-700 font-bold mt-1">₹${item.price}</p>
-                        <a href="${item.contact_link}" target="_blank" class="block w-full bg-green-500 text-white py-2 rounded-lg text-xs font-bold text-center mt-3">
-                            <i class="fa-brands fa-whatsapp"></i> Buy Now
-                        </a>
-                    </div>
-                `;
-            });
         }
 
-        loadProducts(); // पेज खुलते ही सामान लोड करें
+        async function loadProducts() {
+            const { data, error } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
+            const list = document.getElementById('product-list');
+            list.innerHTML = '';
+
+            if (data) {
+                data.forEach(item => {
+                    list.innerHTML += `
+                        <div class="glass-card p-5 rounded-3xl flex flex-col justify-between h-full">
+                            <div>
+                                <div class="h-40 bg-gray-200 dark:bg-gray-800 rounded-2xl flex items-center justify-center mb-4">
+                                    <i class="fas fa-shopping-bag text-4xl text-blue-500 opacity-20"></i>
+                                </div>
+                                <h3 class="font-bold text-xl mb-1">${item.name}</h3>
+                                <div class="text-2xl font-black text-blue-600 dark:text-blue-400 mb-4">₹${item.price}</div>
+                            </div>
+                            <a href="${item.contact_link}" target="_blank" class="block w-full bg-blue-600 text-white py-3 rounded-2xl font-bold text-center hover:bg-blue-700 transition">
+                                <i class="fab fa-whatsapp mr-2"></i>अभी खरीदें
+                            </a>
+                        </div>
+                    `;
+                });
+            }
+        }
+        loadProducts();
     </script>
 </body>
 </html>
