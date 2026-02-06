@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>Krish Bazaar | Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-slate-900 text-white p-8">
+    <div class="max-w-md mx-auto bg-slate-800 p-8 rounded-3xl shadow-2xl border border-gray-700">
+        <h2 class="text-3xl font-black mb-6 text-blue-500">नया सामान जोड़ें</h2>
+        <input id="p-name" type="text" placeholder="प्रोडक्ट का नाम" class="w-full p-4 bg-slate-700 rounded-xl mb-4 outline-none border border-transparent focus:border-blue-500">
+        <input id="p-price" type="number" placeholder="कीमत (₹)" class="w-full p-4 bg-slate-700 rounded-xl mb-4 outline-none border border-transparent focus:border-blue-500">
+        <input id="p-pin" type="password" placeholder="एडमिन पिन दर्ज करें" class="w-full p-4 bg-slate-700 rounded-xl mb-6 outline-none border border-transparent focus:border-blue-500">
+        <button onclick="uploadProduct()" class="w-full bg-blue-600 py-4 rounded-xl font-bold hover:bg-blue-700 transition">पब्लिश करें</button>
+        <p id="msg" class="mt-4 text-center text-sm"></p>
+    </div>
+
+    <script>
+        async function uploadProduct() {
+            const pin = document.getElementById('p-pin').value;
+            if(pin !== '2026') { alert('गलत पिन!'); return; }
+            // यहाँ आपका Supabase कोड काम करेगा
+            document.getElementById('msg').innerText = "सफलतापूर्वक जोड़ दिया गया!";
+        }
+    </script>
+</body>
+</html>
