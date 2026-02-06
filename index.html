@@ -3,48 +3,93 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krish Bazaar | Premium Secure Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; transition: 0.4s; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    </style>
 </head>
-<body class="bg-slate-900 text-white flex items-center justify-center min-h-screen p-6" oncontextmenu="return false">
-    <div class="max-w-md w-full bg-slate-800 p-8 rounded-3xl shadow-2xl border border-blue-900">
-        <h2 class="text-2xl font-bold text-blue-400 mb-6 text-center">🔐 सेलर पैनल (SECURE)</h2>
-        <div class="space-y-4">
-            <input type="text" id="pName" placeholder="नाम (शर्ट, घड़ी, मोबाइल...)" class="w-full p-4 bg-slate-700 rounded-xl outline-none focus:border-blue-500 border border-transparent">
-            <input type="number" id="pPrice" placeholder="कीमत (₹)" class="w-full p-4 bg-slate-700 rounded-xl outline-none focus:border-blue-500 border border-transparent">
-            <input type="url" id="pLink" placeholder="व्हाट्सएप लिंक" class="w-full p-4 bg-slate-700 rounded-xl outline-none focus:border-blue-500 border border-transparent">
-            <button onclick="upload()" id="upBtn" class="w-full bg-blue-600 py-4 rounded-xl font-bold">सामान लाइव करें</button>
+<body class="dark bg-[#0f172a] text-white min-h-screen" id="app-body">
+
+    <nav class="sticky top-0 z-50 p-4 border-b border-gray-800 bg-opacity-90 backdrop-blur-lg flex justify-between items-center px-6">
+        <h1 class="text-2xl font-black italic text-blue-500 tracking-tighter">KRISH<span class="dark:text-white text-slate-900">BAZAAR</span></h1>
+        <div class="flex items-center gap-4">
+            <button onclick="toggleTheme()" class="p-2 rounded-full bg-gray-800 text-yellow-400 border border-gray-700">
+                <i class="fas fa-sun" id="theme-icon"></i>
+            </button>
+            <a href="admin.html" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/30 transition">+ सेल करें</a>
+        </div>
+    </nav>
+
+    <header class="py-12 text-center px-4">
+        <h2 class="text-4xl md:text-6xl font-black mb-4">सब कुछ यहाँ <span class="text-blue-500 text-glow">मिलेगा</span></h2>
+        <p class="text-gray-400 max-w-lg mx-auto">कपड़े, मोबाइल, घड़ियाँ, बिजली का सामान - 100% सुरक्षित और डायरेक्ट डील।</p>
+    </header>
+
+    <div class="container mx-auto p-6">
+        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <p class="col-span-full text-center py-10 opacity-50 animate-pulse">सुरक्षित सिस्टम लोड हो रहा है...</p>
         </div>
     </div>
 
     <script>
+        // Supabase Configuration
         const supabaseUrl = 'https://cwhgruikocochkehlwuw.supabase.co';
         const supabaseKey = 'sb_publishable_njQ9Il9ry7KkkFiYzEn3njQ9Il9ry7KkkFiYzEn3n';
         const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        async function upload() {
-            const pass = prompt("सुरक्षा पिन डालें:");
-            if(pass !== "2026") return alert("गलत पिन!"); // आपका सीक्रेट पिन
-
-            const n = document.getElementById('pName').value;
-            const p = document.getElementById('pPrice').value;
-            const l = document.getElementById('pLink').value;
-            const btn = document.getElementById('upBtn');
-
-            if(!n || !p || !l) return alert("सभी जानकारी भरें!");
-
-            btn.innerText = "सुरक्षित अपलोड हो रहा है...";
-            const { error } = await _supabase.from('products').insert([{ name: n, price: p, contact_link: l }]);
-            
-            if(!error) {
-                alert("सक्सेस! अब होमपेज पर जा रहे हैं।");
-                // 404 फिक्स: यह पक्का करेगा कि आप सही पेज पर लौटें
-                window.location.href = "index.html"; 
+        // Theme Toggle Function
+        function toggleTheme() {
+            const body = document.getElementById('app-body');
+            const icon = document.getElementById('theme-icon');
+            body.classList.toggle('dark');
+            if(body.classList.contains('dark')) {
+                body.classList.replace('bg-white', 'bg-[#0f172a]');
+                body.classList.replace('text-slate-900', 'text-white');
+                icon.classList.replace('fa-moon', 'fa-sun');
             } else {
-                alert("एरर: " + error.message);
-                btn.innerText = "सामान लाइव करें";
+                body.classList.replace('bg-[#0f172a]', 'bg-white');
+                body.classList.replace('text-white', 'text-slate-900');
+                icon.classList.replace('fa-sun', 'fa-moon');
             }
         }
+
+        // Fetch and Display Products
+        async function loadStore() {
+            const { data, error } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
+            const list = document.getElementById('product-list');
+            list.innerHTML = '';
+
+            if (data && data.length > 0) {
+                data.forEach(item => {
+                    list.innerHTML += `
+                        <div class="glass p-5 rounded-[2rem] border border-gray-700/50 hover:border-blue-500 transition-all duration-300 group shadow-xl">
+                            <div class="h-44 bg-gradient-to-br from-gray-800 to-slate-900 rounded-2xl mb-4 flex items-center justify-center relative overflow-hidden">
+                                <i class="fas fa-shopping-bag text-5xl text-blue-500 opacity-20 group-hover:scale-110 transition duration-500"></i>
+                                <span class="absolute top-3 right-3 bg-blue-600 text-[10px] px-2 py-1 rounded-md font-bold text-white">LIVE</span>
+                            </div>
+                            <h3 class="font-bold text-xl mb-1">${item.name}</h3>
+                            <div class="text-2xl font-black text-blue-500 mb-5">₹${item.price}</div>
+                            <a href="${item.contact_link}" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold text-center transition shadow-lg shadow-blue-500/20">
+                                <i class="fab fa-whatsapp mr-2"></i>अभी ऑर्डर करें
+                            </a>
+                        </div>
+                    `;
+                });
+            } else {
+                list.innerHTML = '<div class="col-span-full text-center py-20 opacity-40 text-xl font-bold italic">दुकान में अभी कोई सामान नहीं है।</div>';
+            }
+        }
+
+        // Hacker Security Alert
+        document.oncontextmenu = () => { alert("Security Active: Right-click is restricted."); return false; };
+
+        loadStore();
     </script>
 </body>
 </html>
