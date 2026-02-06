@@ -4,34 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Price Comparison SaaS</title>
+    <title>Admin - Add New Deal</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-blue-600 p-4 text-white font-bold text-center shadow-lg">Price Tracker SaaS</nav>
-
-    <div class="container mx-auto p-4">
-        <div class="mb-6 bg-white p-4 rounded shadow-sm">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Category चुनें:</label>
-            <select class="block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
-                <option>सब कुछ (All)</option>
-                <option>Bikes (Yamaha, Bajaj)</option>
-                <option>Electronics</option>
-                <option>Electrical Parts</option>
-            </select>
-        </div>
-
-        <h1 class="text-2xl font-bold mb-4">आज की बेहतरीन डील्स</h1>
+<body class="bg-blue-50 p-4 min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-2xl">
+        <h2 class="text-2xl font-black mb-6 text-blue-800 text-center uppercase tracking-wider">Add New Product</h2>
         
-        <div id="product-list" class="grid grid-cols-1 gap-4">
-             <div class="bg-white p-4 shadow rounded flex justify-between items-center">
-                <div>
-                    <h2 class="font-bold text-lg text-gray-800">Yamaha Crux (Condition: A1)</h2>
-                    <p class="text-green-600 font-bold">₹12,000</p>
-                    <p class="text-xs text-gray-500 italic">Category: Bikes</p>
-                </div>
-                <a href="#" class="bg-orange-500 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-orange-600">Check Deal</a>
-             </div>
+        <div class="space-y-5">
+            <div>
+                <label class="text-xs font-bold text-gray-500 uppercase ml-1">Product Name</label>
+                <input type="text" placeholder="e.g. Bajaj Boxer" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none transition-all">
+            </div>
+            
+            <div>
+                <label class="text-xs font-bold text-gray-500 uppercase ml-1">Price in Rupees (₹)</label>
+                <input type="number" placeholder="10000" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none transition-all">
+            </div>
+            
+            <div>
+                <label class="text-xs font-bold text-gray-500 uppercase ml-1">Category</label>
+                <select class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none appearance-none">
+                    <option>Bikes</option>
+                    <option>Electronics</option>
+                    <option>Electrical Parts</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="text-xs font-bold text-gray-500 uppercase ml-1">Affiliate / Contact Link</label>
+                <input type="url" placeholder="https://..." class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none transition-all">
+            </div>
+
+            <button onclick="alert('डेटाबेस कनेक्ट करना अगला स्टेप है!')" class="w-full bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg hover:bg-blue-800 transition-all transform active:scale-95">
+                SUBMIT PRODUCT
+            </button>
+        </div>
+        
+        <div class="mt-8 text-center">
+            <a href="index.html" class="text-sm font-bold text-blue-600 hover:text-blue-800 transition-colors">← Back to Homepage</a>
         </div>
     </div>
 </body>
